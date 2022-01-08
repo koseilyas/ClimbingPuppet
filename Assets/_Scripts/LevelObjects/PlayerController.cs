@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerController : StateMachineParent
@@ -10,7 +12,12 @@ public class PlayerController : StateMachineParent
     public HandGrip currentHandGrip;
     [SerializeField] private PlayerHand _leftHand, _rightHand;
     [SerializeField] private Animator _animator;
-    [SerializeField] private List<Rigidbody> _rigidbodies; 
+    [SerializeField] private List<Rigidbody> _rigidbodies;
+
+    private void OnValidate()
+    {
+        _rigidbodies = GetComponentsInChildren<Rigidbody>().ToList();
+    }
 
     private void Awake()
     {

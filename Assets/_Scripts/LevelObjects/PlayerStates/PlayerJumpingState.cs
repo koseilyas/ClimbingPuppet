@@ -7,8 +7,8 @@ public class PlayerJumpingState : IState
     private PlayerController _playerController;
     private PlayerHand _actionHand;
     private List<Rigidbody> _rigidbodies;
-    private float _handVelocity = 7;
-    private float _rigidBodiesMultiplier = 0.6f;
+    private float _startVelocity = 6, _bodyVelocity, _handVelocity;
+    private float _rigidBodiesMultiplier = 0.5f;
     private Vector3 _handGripDirection;
     private bool _isJumping;
 
@@ -20,6 +20,8 @@ public class PlayerJumpingState : IState
 
     public void Enter()
     {
+        _bodyVelocity = _startVelocity ;
+        _handVelocity = _startVelocity;
         _actionHand = _playerController.GetFreeHand();
         _rigidbodies.Remove(_actionHand.GetRigidBody());
         _isJumping = true;
@@ -34,12 +36,26 @@ public class PlayerJumpingState : IState
     {
         if(!_isJumping)
             return;
+        DecreaseSpeed();
+        Move();
+    }
+
+    private void Move()
+    {
         _handGripDirection = (_playerController.targetHandGrip.transform.position - _actionHand.transform.position).normalized;
         _actionHand.GetRigidBody().velocity = _handGripDirection * _handVelocity;
         foreach (var rb in _rigidbodies)
         {
-            rb.velocity = _handGripDirection * _handVelocity * _rigidBodiesMultiplier;
+            rb.velocity = _handGripDirection * _bodyVelocity * _rigidBodiesMultiplier;
         }
+    }
+
+    private void DecreaseSpeed()
+    {
+        _bodyVelocity -= Time.fixedDeltaTime * 3f;
+        _handVelocity -= Time.fixedDeltaTime * 2f;
+        if (_bodyVelocity < 2)
+            _isJumping = false;
     }
 
     public void Exit()
