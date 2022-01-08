@@ -2,23 +2,30 @@ using System;
 
 public class PlayerHangingState : IState
 {
+    private PlayerController _playerController;
+
+    public PlayerHangingState(PlayerController playerController)
+    {
+        _playerController = playerController;
+    }
+
     public void Enter()
     {
-        throw new NotImplementedException();
+        
     }
 
     public void UpdateState()
     {
-        throw new NotImplementedException();
+        
     }
 
     public void FixedUpdateState()
     {
-        throw new NotImplementedException();
+        
     }
 
     public void Exit()
     {
-        throw new NotImplementedException();
+        _playerController.ReleasePlayerFromCurrentGrip();
     }
 }

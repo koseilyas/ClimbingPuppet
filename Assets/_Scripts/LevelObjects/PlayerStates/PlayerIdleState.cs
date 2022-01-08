@@ -1,12 +1,13 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerIdleState : IState
 {
     private readonly PlayerController _playerController;
     private readonly Animator _animator;
-    private readonly Rigidbody[] _rigidbodies;
+    private readonly List<Rigidbody> _rigidbodies;
 
-    public PlayerIdleState(PlayerController playerController, Animator animator, Rigidbody[] rigidbodies)
+    public PlayerIdleState(PlayerController playerController, Animator animator, List<Rigidbody> rigidbodies)
     {
         _playerController = playerController;
         _animator = animator;
@@ -15,7 +16,7 @@ public class PlayerIdleState : IState
 
     public void Enter()
     {
-        DisablePhysics();
+        ChangePhysicsState(false);
     }
 
     public void UpdateState()
@@ -30,15 +31,16 @@ public class PlayerIdleState : IState
 
     public void Exit()
     {
-        
+        _animator.enabled = false;
+        ChangePhysicsState(true);
     }
 
-    void DisablePhysics()
+    void ChangePhysicsState(bool enabled)
     {
         foreach (var rigidbody in _rigidbodies)
         {
-            rigidbody.isKinematic = true;
-            rigidbody.useGravity = false;
+            rigidbody.isKinematic = !enabled;
+            rigidbody.useGravity = enabled;
         }
     }
 }
