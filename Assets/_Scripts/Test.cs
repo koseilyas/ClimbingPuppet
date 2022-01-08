@@ -9,7 +9,8 @@ public class Test : MonoBehaviour
     public ForceMode forceMode;
     public float forcePower;
     public float multiplier;
-
+    public Transform testCube;
+    Vector3 dir = Vector3.up;
     // Update is called once per frame
     void Update()
     {
@@ -23,12 +24,18 @@ public class Test : MonoBehaviour
             }
         }
         
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            
+        }
+        
         if (Input.GetKey(KeyCode.J))
         {
-            rhand.velocity = Vector3.up * forcePower;
+            dir = (testCube.position - lhand.position).normalized;
+            rhand.velocity = dir * forcePower;
             foreach (var rb in others)
             {
-                rb.velocity = Vector3.up * forcePower * multiplier;
+                rb.velocity = dir * forcePower * multiplier;
             }
         }
     }
