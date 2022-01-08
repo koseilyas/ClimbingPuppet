@@ -17,21 +17,18 @@ public class Test : MonoBehaviour
 
         if (Input.GetKey(KeyCode.H))
         {
-            lhand.velocity = Vector3.up * forcePower;
+            dir = (testCube.position - lhand.position).normalized;
+            lhand.velocity = dir * forcePower;
             foreach (var rb in others)
             {
-                rb.velocity = Vector3.up * forcePower * multiplier;
+                rb.velocity = dir * forcePower * multiplier;
             }
         }
         
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            
-        }
         
         if (Input.GetKey(KeyCode.J))
         {
-            dir = (testCube.position - lhand.position).normalized;
+            dir = (testCube.position - rhand.position).normalized;
             rhand.velocity = dir * forcePower;
             foreach (var rb in others)
             {
