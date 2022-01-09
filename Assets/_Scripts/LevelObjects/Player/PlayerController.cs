@@ -15,6 +15,7 @@ public class PlayerController : StateMachineParent
     [SerializeField] private Animator _animator;
     [SerializeField] private List<Rigidbody> _rigidbodies;
     public static event Action OnPlayerDead;
+    public static event Action OnPlayerWin;
 
     private void OnValidate()
     {
@@ -57,11 +58,16 @@ public class PlayerController : StateMachineParent
         }
     }
     
-    private void ReachedToRock(PlayerHand playerHand, Rock rock)
+    private void ReachedToRock(PlayerHand playerHand, Rock rock, bool isFinalRock)
     {
         currentRock = rock;
         playerHand.isFreeToClimb = false;
         ChangeState(HangingState);
+        if (isFinalRock)
+        {
+            GameManager.Instance.PlayerWin();
+            OnPlayerWin?.Invoke();
+        }
     }
 
     public void ReleasePlayerFromCurrentRock()
@@ -69,11 +75,11 @@ public class PlayerController : StateMachineParent
         StartCoroutine(currentRock.ReleasePlayer());
     }
 
-    public void Explode()
+    public void Explode(Vector3 explodeForce)
     {
         foreach (var rb in _rigidbodies)
         {
-            rb.AddForce(Vector3.back * 1500);
+            rb.AddForce(explodeForce);
         }
         ChangeState(PlayerPuppetState);
         OnPlayerDead?.Invoke();

@@ -5,27 +5,25 @@ using UnityEngine;
 
 public class CameraManager : MonoBehaviour
 {
-    // camera will follow this object
-    public Transform Target;
-    //camera transform
-    public Transform camTransform;
-    // offset between camera and target
-    public Vector3 Offset;
-    // change this value to get desired smoothness
-    public float SmoothTime = 0.3f;
- 
-    // This value will change at the runtime depending on target movement. Initialize with zero vector.
-    private Vector3 velocity = Vector3.zero;
+
+    public Transform followTarget;
+    private Transform _camTransform;
+    private Vector3 _offset = Vector3.zero;
+    [SerializeField]private float _smoothTime = 0.3f;
+    private Vector3 _velocity = Vector3.zero;
     private bool _isFollowing = true;
- 
-    private void Start()
-    {
-        Offset = camTransform.position - Target.position;
-    }
+    
 
     private void OnEnable()
     {
         PlayerController.OnPlayerDead += StopFollowing;
+        LevelLoader.OnLevelLoaded += LevelLoaded;
+    }
+
+    private void LevelLoaded(int obj)
+    {
+        _camTransform = Camera.main.transform;
+        _offset = _camTransform.position - followTarget.position;
     }
 
     private void StopFollowing()
@@ -36,14 +34,16 @@ public class CameraManager : MonoBehaviour
     private void OnDisable()
     {
         PlayerController.OnPlayerDead -= StopFollowing;
+        LevelLoader.OnLevelLoaded -= LevelLoaded;
     }
 
     private void LateUpdate()
     {
-        if (!_isFollowing)
+        if (!_isFollowing || followTarget == null)
             return;
-        Vector3 targetPosition = new Vector3(0,Target.position.y,0) + Offset;
-        camTransform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref velocity, SmoothTime);
+        var position = followTarget.position;
+        Vector3 targetPosition = new Vector3(position.x,position.y,0) + _offset;
+        _camTransform.position = Vector3.SmoothDamp(transform.position, targetPosition, ref _velocity, _smoothTime);
 
     }
 }

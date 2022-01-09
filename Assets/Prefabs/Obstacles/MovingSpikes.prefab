@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844a7bbee990c4c9492e0e8b332a2b23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _explodeForce: {x: 0, y: 0, z: -1000}
   pathCreator: {fileID: 0}
   endOfPathInstruction: 0
   speed: 5

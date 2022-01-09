@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class MovingSpikes : MonoBehaviour , IDeadly
 {
+    [SerializeField] private Vector3 _explodeForce;
     public PathCreator pathCreator;
     public EndOfPathInstruction endOfPathInstruction;
     public float speed = 5;
@@ -23,5 +24,10 @@ public class MovingSpikes : MonoBehaviour , IDeadly
     public void Execute()
     {
         pathCreator = null;
+    }
+
+    public Vector3 GetExplodeVector()
+    {
+        return _explodeForce;
     }
 }

@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class Rock : MonoBehaviour
 {
+    [SerializeField] private bool _isFinalRock;
     [SerializeField] private HingeJoint _hingeJoint;
     [SerializeField] private Collider _collider;
     private WaitForSeconds _oneSecond = new WaitForSeconds(1);
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -14,7 +16,7 @@ public class Rock : MonoBehaviour
         {
             _hingeJoint.connectedBody = playerHand.GetRigidBody();
             _collider.enabled = false;
-            playerHand.ReachedToRock(this);
+            playerHand.ReachedToRock(this,_isFinalRock);
         }
     }
 

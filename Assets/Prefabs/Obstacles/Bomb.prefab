@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e235083ff9955419fa727be0ce876c12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _explodeForce: {x: 0, y: 0, z: -1500}
   _vfx: {fileID: 5330858581240419346}
   _meshRenderer: {fileID: 23543009041764820}
   _collider: {fileID: 65480466117539776}
