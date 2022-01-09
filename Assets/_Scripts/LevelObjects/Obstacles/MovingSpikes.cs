@@ -22,6 +22,6 @@ public class MovingSpikes : MonoBehaviour , IDeadly
 
     public void Execute()
     {
-        
+        pathCreator = null;
     }
 }
