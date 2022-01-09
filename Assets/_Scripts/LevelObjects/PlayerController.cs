@@ -8,11 +8,13 @@ public class PlayerController : StateMachineParent
     public PlayerIdleState IdleState { get; private set; }
     public PlayerJumpingState JumpingState { get; private set; }
     public PlayerHangingState HangingState { get; private set; }
+    public PlayerPuppetState PlayerPuppetState { get; private set; }
     public Rock targetRock;
     public Rock currentRock;
     [SerializeField] private PlayerHand _leftHand, _rightHand;
     [SerializeField] private Animator _animator;
     [SerializeField] private List<Rigidbody> _rigidbodies;
+    public static event Action OnPlayerDead;
 
     private void OnValidate()
     {
@@ -22,6 +24,7 @@ public class PlayerController : StateMachineParent
     private void Awake()
     {
         IdleState = new PlayerIdleState(this, _animator,_rigidbodies);
+        PlayerPuppetState = new PlayerPuppetState(this,_rigidbodies);
         JumpingState = new PlayerJumpingState(this, _rigidbodies);
         HangingState = new PlayerHangingState(this);
     }
@@ -65,6 +68,16 @@ public class PlayerController : StateMachineParent
     {
         StartCoroutine(currentRock.ReleasePlayer());
     }
+
+    public void Explode()
+    {
+        foreach (var rb in _rigidbodies)
+        {
+            rb.AddForce(Vector3.back * 1500);
+        }
+        ChangeState(PlayerPuppetState);
+        OnPlayerDead?.Invoke();
+    }
     
     
 
@@ -72,7 +85,9 @@ public class PlayerController : StateMachineParent
     {
         if (_leftHand.isFreeToClimb && _rightHand.isFreeToClimb)
         {
-            
+            float leftHandDistance = Vector3.Distance(_leftHand.transform.position, targetRock.transform.position);
+            float rightHandDistance = Vector3.Distance(_rightHand.transform.position, targetRock.transform.position);
+            return leftHandDistance < rightHandDistance ? _leftHand : _rightHand;
         }
         return _leftHand.isFreeToClimb ? _leftHand : _rightHand;
     }
