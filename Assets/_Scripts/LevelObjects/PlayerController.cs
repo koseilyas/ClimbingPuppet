@@ -8,8 +8,8 @@ public class PlayerController : StateMachineParent
     public PlayerIdleState IdleState { get; private set; }
     public PlayerJumpingState JumpingState { get; private set; }
     public PlayerHangingState HangingState { get; private set; }
-    public HandGrip targetHandGrip;
-    public HandGrip currentHandGrip;
+    public Rock targetRock;
+    public Rock currentRock;
     [SerializeField] private PlayerHand _leftHand, _rightHand;
     [SerializeField] private Animator _animator;
     [SerializeField] private List<Rigidbody> _rigidbodies;
@@ -33,37 +33,37 @@ public class PlayerController : StateMachineParent
 
     private void OnEnable()
     {
-        InputManager.OnHandGripClicked += TryToClimb;
-        PlayerHand.OnReachedToHandGrip += ReachedToHandGrip;
+        InputManager.OnRockClicked += TryToClimb;
+        PlayerHand.OnReachedToRock += ReachedToRock;
     }
 
     private void OnDisable()
     {
-        InputManager.OnHandGripClicked -= TryToClimb;
-        PlayerHand.OnReachedToHandGrip -= ReachedToHandGrip;
+        InputManager.OnRockClicked -= TryToClimb;
+        PlayerHand.OnReachedToRock -= ReachedToRock;
     }
 
-    void TryToClimb(HandGrip handGrip)
+    void TryToClimb(Rock rock)
     {
         if (CurrentState is PlayerIdleState || CurrentState is PlayerHangingState)
         {
-            targetHandGrip = handGrip;
+            targetRock = rock;
             ChangeState(JumpingState);
             _leftHand.isFreeToClimb = true;
             _rightHand.isFreeToClimb = true;
         }
     }
     
-    private void ReachedToHandGrip(PlayerHand playerHand, HandGrip handGrip)
+    private void ReachedToRock(PlayerHand playerHand, Rock rock)
     {
-        currentHandGrip = handGrip;
+        currentRock = rock;
         playerHand.isFreeToClimb = false;
         ChangeState(HangingState);
     }
 
-    public void ReleasePlayerFromCurrentGrip()
+    public void ReleasePlayerFromCurrentRock()
     {
-        StartCoroutine(currentHandGrip.ReleasePlayer());
+        StartCoroutine(currentRock.ReleasePlayer());
     }
     
     

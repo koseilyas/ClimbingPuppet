@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    public static event Action<HandGrip> OnHandGripClicked;
+    public static event Action<Rock> OnRockClicked;
     
     private Camera _camera;
     void Awake()
@@ -43,10 +43,10 @@ public class InputManager : MonoBehaviour
         bool hit = Physics.Raycast(_camera.ScreenPointToRay(pos), out RaycastHit hitInfo);
         if (hit)
         {
-            if (hitInfo.transform.TryGetComponent(out HandGrip handGrip))
+            if (hitInfo.transform.TryGetComponent(out Rock rock))
             {
-                OnHandGripClicked?.Invoke(handGrip);
-                Log.Write($"clicked to {handGrip.name}");
+                OnRockClicked?.Invoke(rock);
+                Log.Write($"clicked to {rock.name}");
             }
         }
     }

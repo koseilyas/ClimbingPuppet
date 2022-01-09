@@ -9,7 +9,7 @@ public class PlayerJumpingState : IState
     private List<Rigidbody> _rigidbodies;
     private float _startVelocity = 6, _bodyVelocity, _handVelocity;
     private float _rigidBodiesMultiplier = 0.5f;
-    private Vector3 _handGripDirection;
+    private Vector3 _rockDirection;
     private bool _isJumping;
 
     public PlayerJumpingState(PlayerController playerController, List<Rigidbody> rigidbodies)
@@ -42,11 +42,11 @@ public class PlayerJumpingState : IState
 
     private void Move()
     {
-        _handGripDirection = (_playerController.targetHandGrip.transform.position - _actionHand.transform.position).normalized;
-        _actionHand.GetRigidBody().velocity = _handGripDirection * _handVelocity;
+        _rockDirection = (_playerController.targetRock.GetColliderPos() - _actionHand.transform.position).normalized;
+        _actionHand.GetRigidBody().velocity = _rockDirection * _handVelocity;
         foreach (var rb in _rigidbodies)
         {
-            rb.velocity = _handGripDirection * _bodyVelocity * _rigidBodiesMultiplier;
+            rb.velocity = _rockDirection * _bodyVelocity * _rigidBodiesMultiplier;
         }
     }
 

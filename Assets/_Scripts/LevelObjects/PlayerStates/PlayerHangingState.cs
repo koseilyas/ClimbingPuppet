@@ -26,6 +26,6 @@ public class PlayerHangingState : IState
 
     public void Exit()
     {
-        _playerController.ReleasePlayerFromCurrentGrip();
+        _playerController.ReleasePlayerFromCurrentRock();
     }
 }

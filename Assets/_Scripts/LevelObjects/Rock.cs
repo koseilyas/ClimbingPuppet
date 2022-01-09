@@ -2,10 +2,10 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class HandGrip : MonoBehaviour
+public class Rock : MonoBehaviour
 {
     [SerializeField] private HingeJoint _hingeJoint;
-    [SerializeField] private BoxCollider _boxCollider;
+    [SerializeField] private Collider _collider;
     private WaitForSeconds _oneSecond = new WaitForSeconds(1);
 
     private void OnTriggerEnter(Collider other)
@@ -13,15 +13,20 @@ public class HandGrip : MonoBehaviour
         if (other.TryGetComponent(out PlayerHand playerHand))
         {
             _hingeJoint.connectedBody = playerHand.GetRigidBody();
-            _boxCollider.enabled = false;
-            playerHand.ReachedToHandGrip(this);
+            _collider.enabled = false;
+            playerHand.ReachedToRock(this);
         }
+    }
+
+    public Vector3 GetColliderPos()
+    {
+        return _collider.transform.position;
     }
 
     public IEnumerator ReleasePlayer()
     {
         _hingeJoint.connectedBody = null;
         yield return _oneSecond;
-        _boxCollider.enabled = true;
+        _collider.enabled = true;
     }
 }
