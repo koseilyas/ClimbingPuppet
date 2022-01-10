@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Floor : MonoBehaviour, IDeadly
 {
-    [SerializeField] private Vector3 _explodeForce;
+    private Vector3 _explodeForce;
+
     public void Execute()
     {
         

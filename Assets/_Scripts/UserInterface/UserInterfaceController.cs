@@ -36,7 +36,7 @@ public class UserInterfaceController : MonoBehaviour
 
     private IEnumerator EnableCanvas()
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(1);
         _levelFinishedCanvas.gameObject.SetActive(true);
         _levelEndScreen.gameObject.SetActive(true);
     }

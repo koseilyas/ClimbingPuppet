@@ -262,6 +262,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelLoader: {fileID: 1094519397}
+  gameSettings: {fileID: 11400000, guid: ced0386ca02644a408eabc6a33b3b66f, type: 2}
 --- !u!114 &647123712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -505,7 +506,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   followTarget: {fileID: 0}
-  _smoothTime: 0.3
+  _smoothTime: 0.4
 --- !u!1 &993304785
 GameObject:
   m_ObjectHideFlags: 0

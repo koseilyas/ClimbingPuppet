@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class GameManager : Singleton<GameManager>
 {
     [SerializeField] private LevelLoader _levelLoader;
+    [SerializeField] public GameSettings gameSettings;
 
     private void Start()
     {

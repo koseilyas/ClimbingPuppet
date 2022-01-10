@@ -5,11 +5,16 @@ using UnityEngine;
 
 public class Explosive : MonoBehaviour , IDeadly
 {
-    [SerializeField] private Vector3 _explodeForce;
+    private Vector3 _explodeForce;
     [SerializeField] private GameObject _vfx;
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private Collider _collider;
 
+
+    private void Start()
+    {
+        _explodeForce.z = GameManager.Instance.gameSettings.dynamiteExplodeForce;
+    }
 
     public void Execute()
     {

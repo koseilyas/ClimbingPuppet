@@ -10,6 +10,11 @@ public class MovingSpikes : MonoBehaviour , IDeadly
     public EndOfPathInstruction endOfPathInstruction;
     public float speed = 5;
     float distanceTravelled;
+    
+    private void Start()
+    {
+        _explodeForce.z = GameManager.Instance.gameSettings.katanaExplodeForce;
+    }
 
     void Update()
     {

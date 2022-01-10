@@ -15,7 +15,7 @@ public class InputManager : MonoBehaviour
     
     void Update()
     {
-#if UNITY_STANDALONE
+#if UNITY_STANDALONE || UNITY_EDITOR
         CheckMouseInput();
 #elif UNITY_ANDROID || UNITY_IOS
         CheckTouchInput();

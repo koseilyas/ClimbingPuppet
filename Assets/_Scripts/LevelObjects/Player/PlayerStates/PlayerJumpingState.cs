@@ -7,7 +7,7 @@ public class PlayerJumpingState : IState
     private PlayerController _playerController;
     private PlayerHand _actionHand;
     private List<Rigidbody> _rigidbodies;
-    private float _startVelocity = 6, _bodyVelocity, _handVelocity;
+    private float _startVelocity = 6f, _bodyVelocity, _handVelocity,_velocityDeacceleration;
     private float _rigidBodiesMultiplier = 0.5f;
     private Vector3 _rockDirection;
     private bool _isJumping;
@@ -20,6 +20,8 @@ public class PlayerJumpingState : IState
 
     public void Enter()
     {
+        _velocityDeacceleration = GameManager.Instance.gameSettings.playerSpeedDeacceleration;
+        _startVelocity = GameManager.Instance.gameSettings.playerStartingJumpSpeed;
         _bodyVelocity = _startVelocity ;
         _handVelocity = _startVelocity;
         _actionHand = _playerController.GetFreeHand();
@@ -52,8 +54,8 @@ public class PlayerJumpingState : IState
 
     private void DecreaseSpeed()
     {
-        _bodyVelocity -= Time.fixedDeltaTime * 3f;
-        _handVelocity -= Time.fixedDeltaTime * 2f;
+        _bodyVelocity -= Time.fixedDeltaTime * (_velocityDeacceleration * 1.5f);
+        _handVelocity -= Time.fixedDeltaTime * _velocityDeacceleration;
         if (_bodyVelocity < 2)
             _isJumping = false;
     }
